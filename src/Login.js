@@ -1,28 +1,60 @@
 import React from "react";
-
+import LoadingScreen from "./component/loadingscreen";
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
     const [email, setEmail] = React.useState('');
     const [isOtpSent, setIsOtpSent] = React.useState(false);
     const [otp, setOtp] = React.useState(Array(6).fill(''));
+    const [isLoading, setIsLoading] = React.useState(false);
+    const navigate = useNavigate(); // Initialize the navigate function
 
     const onSubmit = async () => {
+        setIsLoading(true);
         await fetch(`https://initially-true-jackal.ngrok-free.app/email/send?email=${email}`, {
             headers: {
                 'ngrok-skip-browser-warning': true,
             },
         });
+        setIsLoading(false);
         setIsOtpSent(true);
     };
 
     const onSubmitOtp = async () => {
-        const finalOtp = otp.join('');
-        console.log('finalOtp', finalOtp);
-        await fetch(`https://initially-true-jackal.ngrok-free.app/email/verify?otp=${finalOtp}&email=${email}`, {
-            headers: {
-                'ngrok-skip-browser-warning': true,
-            },
-        });
+        setIsLoading(true);
+        const finalOtp = otp.join('');    
+        try {
+            const response = await fetch(`https://initially-true-jackal.ngrok-free.app/email/verify?otp=${finalOtp}&email=${email}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': true,
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            // Extract the JSON response
+            const data = await response.json();
+            console.log('Response data:', data);
+    
+            // Assume the token is in `data.token`
+            const token = data.token; // Adjust this if the token is in a different field
+    
+            if (token) {
+                // Save the token to localStorage
+                localStorage.setItem('authToken', token);
+                console.log('Token saved to localStorage');
+                // Redirect to the home page
+                navigate('/'); // Adjust the path as needed
+            } else {
+                console.error('Token not found in response');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        setIsLoading(false);
     };
+    
 
     const otpFillingFunc = (e, index) => {
         const newOtp = [...otp]; // Create a new copy of otp array
@@ -50,6 +82,7 @@ export default function Login() {
 
     return (
         <div className="flex flex-row h-screen bg-black text-white">
+            {isLoading && <LoadingScreen />}
             <div className="w-1/2 flex justify-center items-center">
                 <img className="h-full object-cover" src="/mainLogo.png" alt="logo" />
             </div>
