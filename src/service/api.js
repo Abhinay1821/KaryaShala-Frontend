@@ -4,7 +4,7 @@ export const postPersonalInfo = async (data) => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/personal', {
+    const response = await fetch('http://localhost:8080/user/personal', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export const postEducationInfo = async (data) => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/education', {
+    const response = await fetch('http://localhost:8080/user/education', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export const postExperienceInfo = async (data) => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/experience', {
+    const response = await fetch('http://localhost:8080/user/experience', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export const postSkillsInfo = async (data) => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/skills', {
+    const response = await fetch('http://localhost:8080/user/skills', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export const postInterestInfo = async (data) => {
     const token = localStorage.getItem('authToken');    
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/interests', {
+    const response = await fetch('http://localhost:8080/user/interests', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export const markOnboardingComplete = async () => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user/onboard', {
+    const response = await fetch('http://localhost:8080/user/onboard', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -143,8 +143,8 @@ export const getUserInfo = async () => {
     const token = localStorage.getItem('authToken');
 
     // Prepare the request
-    const response = await fetch('https://initially-true-jackal.ngrok-free.app/user', {
-        method: 'GET',
+    const response = await fetch('http://localhost:8080/user', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`, // Add the token to the headers

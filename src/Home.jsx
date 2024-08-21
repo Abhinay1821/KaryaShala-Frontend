@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import OnboardingForm from './component/onboardingForm';
 import LoadingScreen from './component/loadingscreen';
 import { getUserInfo } from './service/api';
+import Navbar from './component/navbar';
 export default function Home() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [user, setUser] = React.useState(null);
@@ -14,9 +15,19 @@ export default function Home() {
     });
   }, []);
 
+  if (user) {
+    console.log(user);
+  }
+
   return (
     <>
-      {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <h1>Welcome {user?.personalInfo.name}</h1> :<OnboardingForm /> }</>}
+      <div class="container min-h-screen bg-base-200">
+
+     
+      <Navbar />
+      {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <h1>Welcome {user?.personalInfo?.name}</h1> :<OnboardingForm /> }</>}
+
+      </div>
     </>
   )
 }
