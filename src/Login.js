@@ -1,6 +1,7 @@
 import React from "react";
 import LoadingScreen from "./component/loadingscreen";
 import { useNavigate } from 'react-router-dom';
+import logo from './logo.png'
 export default function Login() {
     const [email, setEmail] = React.useState('');
     const [isOtpSent, setIsOtpSent] = React.useState(false);
@@ -10,7 +11,7 @@ export default function Login() {
 
     const onSubmit = async () => {
         setIsLoading(true);
-        await fetch(`https://initially-true-jackal.ngrok-free.app/email/send?email=${email}`, {
+        await fetch(`http://localhost:8080/email/send?email=${email}`, {
             headers: {
                 'ngrok-skip-browser-warning': true,
             },
@@ -23,7 +24,7 @@ export default function Login() {
         setIsLoading(true);
         const finalOtp = otp.join('');    
         try {
-            const response = await fetch(`https://initially-true-jackal.ngrok-free.app/email/verify?otp=${finalOtp}&email=${email}`, {
+            const response = await fetch(`http://localhost:8080/email/verify?otp=${finalOtp}&email=${email}`, {
                 headers: {
                     'ngrok-skip-browser-warning': true,
                 },
@@ -84,7 +85,7 @@ export default function Login() {
         <div className="flex flex-row h-screen bg-black text-white">
             {isLoading && <LoadingScreen />}
             <div className="w-1/2 flex justify-center items-center">
-                <img className="h-full object-cover" src="/mainLogo.png" alt="logo" />
+                <img className="h-full object-cover" src={logo} style={{filter:'brightness(0) invert(1)'}} alt="logo" />
             </div>
             <div className="w-1/2 flex flex-col justify-center items-center">
                 <h1 className="text-5xl font-bold mb-6 text-white">Welcome!</h1>
