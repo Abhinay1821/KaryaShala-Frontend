@@ -9,14 +9,14 @@ export default function Home() {
 
   useEffect(() => {
     getUserInfo().then((data) => {
-      setUser(data);
+      setUser(data.data);
       setIsLoading(false);
     });
   }, []);
 
   return (
     <>
-      {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <h1>Welcome {user?.name}</h1> :<OnboardingForm /> }</>}
+      {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <h1>Welcome {user?.personalInfo.name}</h1> :<OnboardingForm /> }</>}
     </>
   )
 }
