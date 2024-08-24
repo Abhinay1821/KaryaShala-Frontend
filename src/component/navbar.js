@@ -1,64 +1,153 @@
-import React from "react";
-import logo from '../logo-1.png';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { getProfilePic } from "../service/api";
 
 export default function Navbar() {
-    return (
-        <div className="bg-gray-900 text-white flex justify-between items-center p-4">
-            {/* Left Side: Homepage, Portfolio, About */}
-            <div className="flex space-x-4">
-                <a href="#home" className="hover:text-gray-400">Homepage</a>
-                <a href="#portfolio" className="hover:text-gray-400">Portfolio</a>
-                <a href="#about" className="hover:text-gray-400">About</a>
-            </div>
+  const [photo, setPhoto] = useState("");
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-            {/* Center: Karyashala Logo */}
-            <div className="flex justify-center flex-grow">
-                <img
-                    src={logo}
-                    alt="logo"
-                    className="w-20 h-12"
-                    style={{ filter: 'brightness(0) invert(1)' }}
-                />
-            </div>
+  useEffect(() => {
+    getProfilePic().then((data) => {
+      setPhoto(data?.data?.picture);
+    });
+  }, []);
 
-            {/* Right Side: Search, Notification, and Logout */}
-            <div className="flex items-center space-x-4">
-                <button className="btn btn-ghost btn-circle">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-                <button className="btn btn-ghost btn-circle">
-                    <div className="indicator">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        <span className="badge badge-xs badge-primary indicator-item"></span>
-                    </div>
-                </button>
-                {/* Logout Button */}
-                <button className="btn btn-ghost">
-                    Logout
-                </button>
-            </div>
+  const Logout = () => {
+    localStorage.removeItem("authToken");
+    window.location.reload();
+  };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  return (
+    <div className="bg-white shadow-md">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden">
+          <button 
+            className="text-gray-600 focus:outline-none" 
+            onClick={handleMobileMenuToggle}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
-    );
+
+        {/* Logo */}
+        <div className="text-xl font-semibold text-gray-800">
+          <Link to="/">karyashala</Link>
+        </div>
+
+        {/* Desktop Menu */}
+        <div className={`hidden lg:flex flex-grow justify-center ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+          <ul className="flex space-x-4">
+            <li>
+              <Link to="/about" className="text-gray-600 hover:text-gray-800">About</Link>
+            </li>
+            <li>
+              <details className="relative">
+                <summary className="cursor-pointer text-gray-600 hover:text-gray-800">Jobs</summary>
+                <ul className="absolute bg-white shadow-lg rounded mt-2 w-48">
+                  <li>
+                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Recommended Jobs</Link>
+                  </li>
+                  <li>
+                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Applied Jobs</Link>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+
+        {/* User Menu */}
+        <div className="flex items-center space-x-4">
+          <button className="text-gray-600 hover:text-gray-800">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              />
+            </svg>
+          </button>
+
+          <div className="relative">
+            <button 
+              className="flex items-center space-x-2"
+              onClick={handleDropdownToggle}
+            >
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
+                <img
+                  src={photo ? photo : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </button>
+            {isDropdownOpen && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded z-10">
+                <li>
+                  <Link to="/profile" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Profile</Link>
+                </li>
+                <li>
+                  <button onClick={Logout} className="block px-4 py-2 text-gray-600 hover:bg-gray-100 w-full text-left">Logout</button>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-white shadow-md">
+          <ul className="space-y-2 py-2">
+            <li>
+              <Link to="/about" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">About</Link>
+            </li>
+            <li>
+              <details className="relative">
+                <summary className="cursor-pointer block px-4 py-2 text-gray-600 hover:bg-gray-100">Jobs</summary>
+                <ul className="absolute bg-white shadow-lg rounded mt-2 w-full">
+                  <li>
+                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Recommended Jobs</Link>
+                  </li>
+                  <li>
+                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Applied Jobs</Link>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
