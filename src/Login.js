@@ -1,7 +1,6 @@
 import React from "react";
 import LoadingScreen from "./component/loadingscreen";
 import { useNavigate } from 'react-router-dom';
-import logo from './logo.png';
 
 export default function Login() {
     const [email, setEmail] = React.useState('');
@@ -99,7 +98,7 @@ export default function Login() {
         <div className="flex flex-col md:flex-row h-screen bg-base-100 text-white relative">
             {isLoading && <LoadingScreen />}
             <div className="w-full md:w-1/2 flex justify-center items-center p-4 md:p-8">
-                <img className="h-auto max-w-xs md:max-w-md object-cover" src={logo} style={{filter:'brightness(0) invert(1)'}} alt="logo" />
+                <img className="h-auto max-w-xs md:max-w-md object-cover" src={'/logo.png'} style={{filter:'brightness(0) invert(1)'}} alt="logo" />
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-8">
                 <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">Welcome!</h1>

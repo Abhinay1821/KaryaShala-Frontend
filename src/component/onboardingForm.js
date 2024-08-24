@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LoadingScreen from './loadingscreen';
 import { useNavigate } from 'react-router-dom';
-import { postEducationInfo, postExperienceInfo, postInterestInfo, postPersonalInfo, postSkillsInfo, markOnboardingComplete } from '../service/api';
+import { postEducationInfo, postExperienceInfo, postInterestInfo, postPersonalInfo, postSkillsInfo, markOnboardingComplete } from '../OnBoardingService/api';
 const OnboardingForm = () => {
   const [currentSection, setCurrentSection] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

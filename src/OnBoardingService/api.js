@@ -138,30 +138,6 @@ export const markOnboardingComplete = async () => {
 
 }
 
-export const getUserInfo = async () => {
-    // Get the token from localStorage
-    const token = localStorage.getItem('authToken');
-
-    // Prepare the request
-    const response = await fetch('http://localhost:8080/user', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Add the token to the headers
-            'ngrok-skip-browser-warning': true,
-
-        },
-    });
-
-    // Handle the response
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
-
-}
-
 export const updateProfilePic = async (data) => {
     // Get the token from localStorage
     const token = localStorage.getItem('authToken');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { getProfilePic } from "../service/api";
+import { getProfilePic } from "../OnBoardingService/api";
 
 export default function Navbar() {
   const [photo, setPhoto] = useState("");
@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-gray-900 text-white shadow-md">
+    <div className="bg-gray-800 z-[2] h-15 text-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <div className="lg:hidden">
@@ -72,13 +72,10 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Logo */}
-        <div className="text-xl font-semibold text-white">
-          <Link to="/">karyashala</Link>
-        </div>
+
 
         {/* Desktop Menu */}
-        <div className={`hidden lg:flex flex-grow justify-center ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+        <div className={`hidden lg:flex  ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
           <ul className="flex space-x-4">
             <li>
               <Link to="/about" className="text-gray-300 hover:text-gray-100">About</Link>
@@ -86,7 +83,7 @@ export default function Navbar() {
             <li>
               <details className="relative">
                 <summary className="cursor-pointer text-gray-300 hover:text-gray-100">Jobs</summary>
-                <ul className="absolute bg-gray-800 shadow-lg rounded mt-2 w-48">
+                <ul className="absolute z-[2] bg-gray-800 shadow-lg rounded mt-2 w-48 ">
                   <li>
                     <Link to="#" className="block px-4 py-2 text-gray-300 hover:bg-gray-700">Recommended Jobs</Link>
                   </li>
@@ -99,6 +96,10 @@ export default function Navbar() {
           </ul>
         </div>
 
+        {/* Logo */}
+          <div className="text-xl justify-center font-semibold text-white">
+            <Link to="/">karyashala</Link>
+          </div>
         {/* User Menu */}
         <div className="flex items-center space-x-4">
           <button className="text-gray-300 hover:text-gray-100">

@@ -2,12 +2,13 @@ import React from 'react'
 import { useEffect } from 'react';
 import OnboardingForm from './component/onboardingForm';
 import LoadingScreen from './component/loadingscreen';
-import { getUserInfo } from './service/api';
+import { getUserInfo } from './OnBoardingService/api';
 import Navbar from './component/navbar';
 import UserProfileHome from './component/userProfileHome';
+import { useAPI } from './component/APIProvider';
 export default function Home() {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [user, setUser] = React.useState(null);
+
+  const {getUserInfo,isLoading,user,setIsLoading,setUser} = useAPI()
 
   useEffect(() => {
     getUserInfo().then((data) => {
@@ -15,10 +16,6 @@ export default function Home() {
       setIsLoading(false);
     });
   }, []);
-
-  if (user) {
-    console.log(user);
-  }
 
   return (
     <>

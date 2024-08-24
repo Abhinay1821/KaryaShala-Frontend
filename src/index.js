@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './ThemeProvider'; // Import the ThemeProvider
+import APIProvider from './component/APIProvider'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <ThemeProvider>
-    <App />
+        <APIProvider>
+            <App />
+        </APIProvider>
     </ThemeProvider>
 
 );

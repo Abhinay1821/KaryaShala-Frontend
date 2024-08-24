@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../logo.png';
 
 function SplashMessage() {
     const fadeInKeyframes = `
@@ -39,7 +38,7 @@ function SplashMessage() {
 
     return (
         <div style={style.container}>
-            <img src={logo} className="App-logo" alt="logo" style={style.centeredDiv} />
+            <img src={'/logo.png'} className="App-logo" alt="logo" style={style.centeredDiv} />
         </div>
     );
 }
