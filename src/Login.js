@@ -1,13 +1,14 @@
 import React from "react";
 import LoadingScreen from "./component/loadingscreen";
 import { useNavigate } from 'react-router-dom';
-import logo from './logo.png'
+import logo from './logo.png';
+
 export default function Login() {
     const [email, setEmail] = React.useState('');
     const [isOtpSent, setIsOtpSent] = React.useState(false);
     const [otp, setOtp] = React.useState(Array(6).fill(''));
     const [isLoading, setIsLoading] = React.useState(false);
-    const navigate = useNavigate(); // Initialize the navigate function
+    const navigate = useNavigate();
 
     const onSubmit = async () => {
         setIsLoading(true);
@@ -34,19 +35,15 @@ export default function Login() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
     
-            // Extract the JSON response
             const data = await response.json();
             console.log('Response data:', data);
     
-            // Assume the token is in `data.token`
-            const token = data.token; // Adjust this if the token is in a different field
+            const token = data.token;
     
             if (token) {
-                // Save the token to localStorage
                 localStorage.setItem('authToken', token);
                 console.log('Token saved to localStorage');
-                // Redirect to the home page
-                navigate('/'); // Adjust the path as needed
+                window.location.reload();
             } else {
                 console.error('Token not found in response');
             }
@@ -55,41 +52,58 @@ export default function Login() {
         }
         setIsLoading(false);
     };
-    
 
     const otpFillingFunc = (e, index) => {
-        const newOtp = [...otp]; // Create a new copy of otp array
-        newOtp[index] = e.target.value;
-        setOtp(newOtp);
+        const newOtp = [...otp];
+        if (e.type === 'paste') {
+            // Handle paste
+            const pastedData = e.clipboardData.getData('text').slice(0, 6);
+            pastedData.split('').forEach((char, i) => {
+                newOtp[i] = char;
+            });
+            setOtp(newOtp);
+        } else {
+            // Handle key press
+            newOtp[index] = e.target.value;
 
-        if (e.key === 'Backspace' && index > 0 && !newOtp[index]) {
-            const inputElement = document.getElementById(`otp${index - 1}`);
-            if (inputElement) {
-                inputElement.focus();
-            }
-            return;
-        }
-
-        for (let i = 0; i < newOtp.length; i++) {
-            if (newOtp[i] === '') {
-                const inputElement = document.getElementById(`otp${i}`);
+            if (e.key === 'Backspace' && index > 0 && !newOtp[index]) {
+                const inputElement = document.getElementById(`otp${index - 1}`);
                 if (inputElement) {
                     inputElement.focus();
                 }
-                break;
+                return;
+            }
+
+            for (let i = 0; i < newOtp.length; i++) {
+                if (newOtp[i] === '') {
+                    const inputElement = document.getElementById(`otp${i}`);
+                    if (inputElement) {
+                        inputElement.focus();
+                    }
+                    break;
+                }
+            }
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                onSubmitOtp();
             }
         }
     };
 
+    const navigateToAbout = () => {
+        navigate('/about');
+    };
+
     return (
-        <div className="flex flex-row h-screen bg-black text-white">
+        <div className="flex flex-col md:flex-row h-screen bg-base-100 text-white relative">
             {isLoading && <LoadingScreen />}
-            <div className="w-1/2 flex justify-center items-center">
-                <img className="h-full object-cover" src={logo} style={{filter:'brightness(0) invert(1)'}} alt="logo" />
+            <div className="w-full md:w-1/2 flex justify-center items-center p-4 md:p-8">
+                <img className="h-auto max-w-xs md:max-w-md object-cover" src={logo} style={{filter:'brightness(0) invert(1)'}} alt="logo" />
             </div>
-            <div className="w-1/2 flex flex-col justify-center items-center">
-                <h1 className="text-5xl font-bold mb-6 text-white">Welcome!</h1>
-                <div className="w-1/2">
+            <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-4 md:p-8">
+                <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white">Welcome!</h1>
+                <div className="w-full max-w-md">
                     {!isOtpSent ? (
                         <div className="flex flex-col">
                             <label className="text-lg mb-2 text-white">Email</label>
@@ -101,16 +115,17 @@ export default function Login() {
                             />
                         </div>
                     ) : (
-                        <div className="flex flex-row">
+                        <div className="flex flex-row justify-center">
                             {otp.map((val, ind) => (
                                 <input
                                     key={ind}
                                     value={val}
                                     maxLength={1}
                                     id={`otp${ind}`}
-                                    className="w-12 mr-4 bg-transparent border-b-2 border-white text-center text-white"
+                                    className="w-12 h-12 mx-2 bg-transparent border-b-2 border-white text-center text-white"
                                     onKeyUp={(e) => otpFillingFunc(e, ind)}
                                     onChange={(e) => otpFillingFunc(e, ind)}
+                                    onPaste={(e) => otpFillingFunc(e, ind)}
                                 />
                             ))}
                         </div>

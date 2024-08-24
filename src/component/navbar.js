@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getProfilePic } from "../service/api";
 
@@ -7,19 +7,39 @@ export default function Navbar() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const dropdownRef = useRef(null);
+
   useEffect(() => {
     getProfilePic().then((data) => {
       setPhoto(data?.data?.picture);
     });
   }, []);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const Logout = () => {
     localStorage.removeItem("authToken");
     window.location.reload();
+    setDropdownOpen(false); // Close dropdown on logout
   };
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMenuItemClick = () => {
+    setDropdownOpen(false); // Close dropdown on menu item click
   };
 
   const handleMobileMenuToggle = () => {
@@ -27,12 +47,12 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-white shadow-md">
+    <div className="bg-gray-900 text-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <div className="lg:hidden">
-          <button 
-            className="text-gray-600 focus:outline-none" 
+          <button
+            className="text-white focus:outline-none"
             onClick={handleMobileMenuToggle}
           >
             <svg
@@ -53,7 +73,7 @@ export default function Navbar() {
         </div>
 
         {/* Logo */}
-        <div className="text-xl font-semibold text-gray-800">
+        <div className="text-xl font-semibold text-white">
           <Link to="/">karyashala</Link>
         </div>
 
@@ -61,17 +81,17 @@ export default function Navbar() {
         <div className={`hidden lg:flex flex-grow justify-center ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/about" className="text-gray-600 hover:text-gray-800">About</Link>
+              <Link to="/about" className="text-gray-300 hover:text-gray-100">About</Link>
             </li>
             <li>
               <details className="relative">
-                <summary className="cursor-pointer text-gray-600 hover:text-gray-800">Jobs</summary>
-                <ul className="absolute bg-white shadow-lg rounded mt-2 w-48">
+                <summary className="cursor-pointer text-gray-300 hover:text-gray-100">Jobs</summary>
+                <ul className="absolute bg-gray-800 shadow-lg rounded mt-2 w-48">
                   <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Recommended Jobs</Link>
+                    <Link to="#" className="block px-4 py-2 text-gray-300 hover:bg-gray-700">Recommended Jobs</Link>
                   </li>
                   <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Applied Jobs</Link>
+                    <Link to="#" className="block px-4 py-2 text-gray-300 hover:bg-gray-700">Applied Jobs</Link>
                   </li>
                 </ul>
               </details>
@@ -81,7 +101,7 @@ export default function Navbar() {
 
         {/* User Menu */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-600 hover:text-gray-800">
+          <button className="text-gray-300 hover:text-gray-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -98,12 +118,12 @@ export default function Navbar() {
             </svg>
           </button>
 
-          <div className="relative">
-            <button 
+          <div className="relative" ref={dropdownRef}>
+            <button
               className="flex items-center space-x-2"
               onClick={handleDropdownToggle}
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-600">
                 <img
                   src={photo ? photo : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
                   alt="Profile"
@@ -112,12 +132,23 @@ export default function Navbar() {
               </div>
             </button>
             {isDropdownOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded z-10">
+              <ul className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg rounded z-10">
                 <li>
-                  <Link to="/profile" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Profile</Link>
+                  <Link 
+                    to="/userProfile" 
+                    className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
+                    onClick={handleMenuItemClick}
+                  >
+                    Profile
+                  </Link>
                 </li>
                 <li>
-                  <button onClick={Logout} className="block px-4 py-2 text-gray-600 hover:bg-gray-100 w-full text-left">Logout</button>
+                  <button 
+                    onClick={Logout} 
+                    className="block px-4 py-2 text-gray-300 hover:bg-gray-700 w-full text-left"
+                  >
+                    Logout
+                  </button>
                 </li>
               </ul>
             )}
@@ -127,20 +158,38 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white shadow-md">
+        <div className="lg:hidden bg-gray-800 text-white shadow-md">
           <ul className="space-y-2 py-2">
             <li>
-              <Link to="/about" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">About</Link>
+              <Link 
+                to="/about" 
+                className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
+                onClick={handleMobileMenuToggle}
+              >
+                About
+              </Link>
             </li>
             <li>
               <details className="relative">
-                <summary className="cursor-pointer block px-4 py-2 text-gray-600 hover:bg-gray-100">Jobs</summary>
-                <ul className="absolute bg-white shadow-lg rounded mt-2 w-full">
+                <summary className="cursor-pointer block px-4 py-2 text-gray-300 hover:bg-gray-700">Jobs</summary>
+                <ul className="absolute bg-gray-800 shadow-lg rounded mt-2 w-full">
                   <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Recommended Jobs</Link>
+                    <Link 
+                      to="#" 
+                      className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
+                      onClick={handleMobileMenuToggle}
+                    >
+                      Recommended Jobs
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Applied Jobs</Link>
+                    <Link 
+                      to="#" 
+                      className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
+                      onClick={handleMobileMenuToggle}
+                    >
+                      Applied Jobs
+                    </Link>
                   </li>
                 </ul>
               </details>

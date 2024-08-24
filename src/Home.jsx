@@ -22,10 +22,7 @@ export default function Home() {
 
   return (
     <>
-      <div class="min-h-screen min-w-screen bg-base-200">
- 
-     
-      <Navbar />
+      <div class="min-h-screen min-w-screen bg-base-200">     
       {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <UserProfileHome user={user}/> :<OnboardingForm /> }</>}
 
       </div>

@@ -1,23 +1,60 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-import Login from './Login';
-import Home from './Home';
-import UserProfile from './component/userProfile'
+// Example Components
+import Login from "./Login";
+import Home from "./Home";
+import UserProfile from "./pages/profile";
+import Navbar from "./component/navbar";
+import AboutPage from "./pages/about";
+import Nav from "./component/nav";
+import withSplashScreen from "./component/splashScreen";
 
-
-const App = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/" element={
-                        <Home />
-                } />
-                <Route path="/userprofile" element={<UserProfile/>}/>
-            </Routes>
-        </Router>
-    );
+// ProtectedRoute Component
+const ProtectedRoute = ({ element, auth }) => {
+  return auth ? element : <Navigate to="/login" />;
 };
 
-export default App;
+// AppRoutes Component
+const AppRoutes = () => {
+  const isAuthenticated = localStorage.getItem("authToken") ? true : false;
+
+  return (
+    <div>
+      {isAuthenticated ? <Navbar /> : <Nav />}
+      <Routes>
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+        />{" "}
+        <Route
+          path="/"
+          element={<ProtectedRoute element={<Home />} auth={isAuthenticated} />}
+        />
+        <Route
+          path="/userProfile"
+          element={
+            <ProtectedRoute element={<UserProfile />} auth={isAuthenticated} />
+          }
+        />
+        <Route path="/about" element={<AboutPage />} /> {/* Public route */}
+      </Routes>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  return (
+    <Router>
+      <AppRoutes />
+    </Router>
+  );
+};
+
+export default withSplashScreen(App);
