@@ -144,7 +144,7 @@ export const getUserInfo = async () => {
 
     // Prepare the request
     const response = await fetch('http://localhost:8080/user', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`, // Add the token to the headers

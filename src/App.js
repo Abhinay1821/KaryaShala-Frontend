@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Example Components
 import Login from './Login';
 import Home from './Home';
+import UserProfile from './component/userProfile'
 
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
                 <Route path="/" element={
                         <Home />
                 } />
+                <Route path="/userprofile" element={<UserProfile/>}/>
             </Routes>
         </Router>
     );
