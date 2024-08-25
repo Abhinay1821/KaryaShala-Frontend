@@ -106,11 +106,18 @@ export default function Login() {
 
   return (
     <>
-       {error && (
-                <div style={{ color: 'red', padding: '10px', border: '1px solid red', borderRadius: '5px' }}>
-                    {error}
-                </div>
-            )}
+      {error && (
+        <div
+          style={{
+            color: "red",
+            padding: "10px",
+            border: "1px solid red",
+            borderRadius: "5px",
+          }}
+        >
+          {error}
+        </div>
+      )}
       <div className="flex flex-col md:flex-row h-screen bg-base-100 text-white relative">
         {isLoading && <LoadingScreen />}
         <div className="w-full md:w-1/2 flex justify-center items-center p-4 md:p-8">
@@ -143,7 +150,7 @@ export default function Login() {
                 />
               </div>
             ) : (
-              <div className="flex flex-row justify-center">
+              <div className="flex flex-row justify-center mb-6">
                 {otp.map((val, ind) => (
                   <input
                     key={ind}
@@ -159,7 +166,7 @@ export default function Login() {
               </div>
             )}
             <button
-              className="bg-white text-black px-4 py-2 rounded mt-4 hover:bg-gray-300 transition"
+              className="text-black bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               onClick={isOtpSent ? onSubmitOtp : onSubmit}
             >
               Submit

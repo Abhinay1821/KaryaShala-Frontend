@@ -4,7 +4,7 @@ import { useState } from "react";
 import CreateUserModal from "./registerUser";
 import JobFormModal from "./jobformModal";
 import CandiateList from "./candidateList";
-import {createJob} from "../service/api";
+import {createJob,createUser} from "../service/api";
 export default function UserProfileHome({ user }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
@@ -25,8 +25,9 @@ export default function UserProfileHome({ user }) {
     handleJobCloseModal();
   };
 
-  const handleCreateUser = (userData) => {
+  const handleCreateUser = async (userData) => {
     console.log('User created:', userData);
+    await createUser(userData);
     setModalOpen(false);
   };
   return (
