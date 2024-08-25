@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getProfilePic } from "../service/api";
-
+import companyLogo from "../company-logo.png";
 export default function Navbar() {
   const [photo, setPhoto] = useState("");
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -9,11 +9,11 @@ export default function Navbar() {
 
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    getProfilePic().then((data) => {
-      setPhoto(data?.data?.picture);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getProfilePic().then((data) => {
+  //     setPhoto(data?.data?.picture);
+  //   });
+  // }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -74,28 +74,24 @@ export default function Navbar() {
 
         {/* Logo */}
         <div className="text-xl font-semibold text-white">
-          <Link to="/">karyashala</Link>
+          <div className="flex items-center">
+          <img src={companyLogo} alt="Profile" className="w-15 h-10"/>
+          <hr className="w-px h-10 bg-gray-500 mx-1 border-0" />
+          <Link>karyashala</Link>
+          </div>
+          
         </div>
 
         {/* Desktop Menu */}
         <div className={`hidden lg:flex flex-grow justify-center ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/about" className="text-gray-300 hover:text-gray-100">About</Link>
+              <Link to="/" className="text-gray-300 hover:text-gray-100">Home</Link>
             </li>
             <li>
-              <details className="relative">
-                <summary className="cursor-pointer text-gray-300 hover:text-gray-100">Jobs</summary>
-                <ul className="absolute bg-gray-800 shadow-lg rounded mt-2 w-48">
-                  <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-300 hover:bg-gray-700">Recommended Jobs</Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="block px-4 py-2 text-gray-300 hover:bg-gray-700">Applied Jobs</Link>
-                  </li>
-                </ul>
-              </details>
+              <Link to="/users" className="text-gray-300 hover:text-gray-100">Users</Link>
             </li>
+            
           </ul>
         </div>
 
@@ -162,37 +158,15 @@ export default function Navbar() {
           <ul className="space-y-2 py-2">
             <li>
               <Link 
-                to="/about" 
+                to="/" 
                 className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
                 onClick={handleMobileMenuToggle}
               >
-                About
+                Home
               </Link>
             </li>
             <li>
-              <details className="relative">
-                <summary className="cursor-pointer block px-4 py-2 text-gray-300 hover:bg-gray-700">Jobs</summary>
-                <ul className="absolute bg-gray-800 shadow-lg rounded mt-2 w-full">
-                  <li>
-                    <Link 
-                      to="#" 
-                      className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
-                      onClick={handleMobileMenuToggle}
-                    >
-                      Recommended Jobs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link 
-                      to="#" 
-                      className="block px-4 py-2 text-gray-300 hover:bg-gray-700"
-                      onClick={handleMobileMenuToggle}
-                    >
-                      Applied Jobs
-                    </Link>
-                  </li>
-                </ul>
-              </details>
+            
             </li>
           </ul>
         </div>

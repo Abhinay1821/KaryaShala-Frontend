@@ -280,7 +280,7 @@ const OnboardingForm = () => {
               name="picture"
               accept="image/jpeg, image/png"
               onChange={(e) => handleChange(e, 1)}
-              className="w-full p-3 bg-gray-700 text-white rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             />
             <label className="block text-gray-300 mb-2">
               Resume 
@@ -292,7 +292,7 @@ const OnboardingForm = () => {
               name="resume"
               accept=".pdf, .doc, .docx"
               onChange={(e) => handleChange(e, 1)}
-              className="w-full p-3 bg-gray-700 text-white rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             />
           </div>
         )}

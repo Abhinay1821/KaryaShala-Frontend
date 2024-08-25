@@ -1,7 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import CreateUserModal from "./registerUser";
+import JobFormModal from "./jobformModal";
+import CandiateList from "./candidateList";
+import {createJob} from "../service/api";
 export default function UserProfileHome({ user }) {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+
+  const handleJobOpenModal = () => {
+    setIsJobModalOpen(true);
+  };
+
+  const handleJobCloseModal = () => {
+    setIsJobModalOpen(false);
+  };
+
+  const handleSaveJob = async (jobData) => {
+    // Perform the save operation (e.g., sending data to an API)
+    console.log("Job data saved:", jobData);
+    await createJob(jobData);
+    // Close the modal after saving
+    handleJobCloseModal();
+  };
+
+  const handleCreateUser = (userData) => {
+    console.log('User created:', userData);
+    setModalOpen(false);
+  };
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-900 text-white p-4">
       {/* Left Sidebar */}
@@ -13,14 +40,12 @@ export default function UserProfileHome({ user }) {
             className="rounded-full w-12 h-12"
           />
           <div className="mt-5 text-center">
-            <h2 className="font-semibold">{user.personalInfo.name}</h2>
-            <p className="text-gray-400 text-sm">
-              Software Engineer @ Nference Labs
-            </p>
+            <h2 className="font-semibold">{user?.name}</h2>
+            <p className="text-gray-400 text-sm">{user?.title}</p>
           </div>
         </div>
         <div className="flex justify-center items-center">
-          <button className="bg-blue-600 text-white py-2 px-6 rounded-lg shadow-lg transition-all duration-300 hover:bg-blue-700 hover:scale-105">
+          <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
             <Link to={"/userprofile"}>Complete Profile</Link>
           </button>
         </div>
@@ -36,31 +61,29 @@ export default function UserProfileHome({ user }) {
             </button>
           </div>
         </div>
-        <nav className="mt-6 space-y-4">
-          <a
-            href="#"
-            className="block text-lg font-semibold text-gray-300 hover:text-blue-500"
-          >
-            My Home
-          </a>
-          <a
-            href="#"
-            className="block text-lg font-semibold text-gray-300 hover:text-blue-500"
-          >
-            Jobs
-          </a>
-          <a
-            href="#"
-            className="block text-lg font-semibold text-gray-300 hover:text-blue-500"
-          >
-            Companies
-          </a>
-          <a
-            href="#"
-            className="block text-lg font-semibold text-gray-300 hover:text-blue-500"
-          >
-            Blogs
-          </a>
+        <nav className=" flex flex-col justify-center items-center mt-6 space-y-4">
+          <h6 className="text-lg font-semibold text-gray-400">Quick Actions</h6>
+          <button onClick={() => setModalOpen(true)} className="text-blue-400">Create User</button>
+          <CreateUserModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            onSubmit={handleCreateUser}
+          />
+          {/* <Link to={"/userList"} >Users List</Link> */}
+
+          
+          <button
+        onClick={handleJobOpenModal}
+        className="text-blue-400"
+      >
+        Create Job
+      </button>
+
+      <JobFormModal
+        isOpen={isJobModalOpen}
+        onClose={handleJobCloseModal}
+        onSave={handleSaveJob}
+      />
         </nav>
       </div>
 
@@ -68,22 +91,9 @@ export default function UserProfileHome({ user }) {
       <div className="w-full lg:w-2/5 flex-1 p-4 lg:p-8">
         <section className="mb-8">
           <h1 className="text-2xl font-bold mb-4">
-            Early Access Roles from Top Companies
+            Top Candidates
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md">
-              <h2 className="font-semibold text-lg">Sr. Software Engineer</h2>
-              <p className="text-gray-400">B2B Firm in IT Domain</p>
-              <button className="mt-2 text-blue-400">Share interest</button>
-            </div>
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md">
-              <h2 className="font-semibold text-lg">
-                Java Full Stack Developer
-              </h2>
-              <p className="text-gray-400">Leading Indian Investment Bank</p>
-              <button className="mt-2 text-blue-400">Share interest</button>
-            </div>
-          </div>
+          <CandiateList/>
         </section>
 
         <section>

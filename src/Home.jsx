@@ -6,7 +6,7 @@ import { getUserInfo } from './service/api';
 import Navbar from './component/navbar';
 import UserProfileHome from './component/userProfileHome';
 export default function Home() {
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [user, setUser] = React.useState(null);
 
   useEffect(() => {
@@ -23,8 +23,7 @@ export default function Home() {
   return (
     <>
       <div class="min-h-screen min-w-screen bg-base-200">     
-      {isLoading ? <LoadingScreen /> : <>{user?.isOnboarded ? <UserProfileHome user={user}/> :<OnboardingForm /> }</>}
-
+      <UserProfileHome user={user}/>
       </div>
     </>
   )

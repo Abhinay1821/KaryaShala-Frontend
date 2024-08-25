@@ -14,7 +14,7 @@ import Navbar from "./component/navbar";
 import AboutPage from "./pages/about";
 import Nav from "./component/nav";
 import withSplashScreen from "./component/splashScreen";
-
+import UserListPage from "./pages/userListPage";
 // ProtectedRoute Component
 const ProtectedRoute = ({ element, auth }) => {
   return auth ? element : <Navigate to="/login" />;
@@ -26,7 +26,7 @@ const AppRoutes = () => {
 
   return (
     <div>
-      {isAuthenticated ? <Navbar /> : <Nav />}
+      {isAuthenticated ? <Navbar /> : null}
       <Routes>
         <Route
           path="/login"
@@ -42,6 +42,8 @@ const AppRoutes = () => {
             <ProtectedRoute element={<UserProfile />} auth={isAuthenticated} />
           }
         />
+
+        <Route path="/users" element={<ProtectedRoute element={<UserListPage />} auth={isAuthenticated} />} />
         <Route path="/about" element={<AboutPage />} /> {/* Public route */}
       </Routes>
     </div>
