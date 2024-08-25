@@ -8,14 +8,8 @@ import UserProfileHome from './component/userProfileHome';
 import { useAPI } from './component/APIProvider';
 export default function Home() {
 
-  const {getUserInfo,isLoading,user,setIsLoading,setUser} = useAPI()
+  const {isLoading,user,setUser} = useAPI()
 
-  useEffect(() => {
-    getUserInfo().then((data) => {
-      setUser(data.data);
-      setIsLoading(false);
-    });
-  }, []);
 
   return (
     <>

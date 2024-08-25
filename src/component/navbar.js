@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { getProfilePic } from "../OnBoardingService/api";
+import { useAPI } from "./APIProvider";
+import ProfilePicture from "./ProfilePicture";
 
 export default function Navbar() {
-  const [photo, setPhoto] = useState("");
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    getProfilePic().then((data) => {
-      setPhoto(data?.data?.picture);
-    });
-  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -124,13 +118,14 @@ export default function Navbar() {
               className="flex items-center space-x-2"
               onClick={handleDropdownToggle}
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-600">
+              {/* <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-600">
                 <img
                   src={photo ? photo : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </div> */}
+              <ProfilePicture isUpdate={false} width={10} height={10}/>
             </button>
             {isDropdownOpen && (
               <ul className="absolute right-0 mt-2 w-48 bg-gray-800 shadow-lg rounded z-10">
