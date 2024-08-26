@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAPI } from '../component/APIProvider';
 import ProfilePicture from '../component/ProfilePicture';
+import ResumeSection from '../component/ResumeSection';
 
 const keySkills = ['CPP', 'REACT', 'JAVASCRIPT', 'HTML', 'CSS', 'DJANGO', 'PYTHON', 'DOCKER', 'KUBERNATIS']
 const employments = [
@@ -40,15 +40,15 @@ const education = [
 ];
 
 export default function UserProfile() {
-    const { user, photo } = useAPI()
-    console.log('user: ', user);
     return (
         <>
             <div className="container mx-auto p-6">
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                            <ProfilePicture defaultProfile={photo} isUpdate={true} width={24} height={24} />
+                            <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-600">
+                                <ProfilePicture isUpdate={true} width={24} height={24} />
+                            </div>
                             <div className="ml-4">
                                 <h2 className="text-xl font-semibold text-white">Abhinay Agrawal</h2>
                                 <p className="text-sm text-gray-400">Software Engineer at Nference Labs</p>
@@ -82,16 +82,7 @@ export default function UserProfile() {
                     {/* Main Profile Section */}
                     <div className="col-span-2">
                         {/* Resume Section */}
-                        <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                            <div className="flex justify-between items-center">
-                                <h2 className="font-semibold text-white">Resume</h2>
-                                <button className="text-blue-400 hover:underline">Update resume</button>
-                            </div>
-                            <div className="mt-4 p-4 border border-dashed border-gray-600 rounded-lg">
-                                <p className="text-gray-300">Abhinay_Agrawal_Resume.pdf</p>
-                                <p className="text-sm text-gray-500">Uploaded on Aug 09, 2024</p>
-                            </div>
-                        </div>
+                        <ResumeSection/>
 
                         {/* Resume Headline */}
                         <div className="bg-gray-800 p-6 mt-6 rounded-lg shadow-lg">

@@ -15,7 +15,7 @@ export default function APIProvider({children}) {
         const token = localStorage.getItem('authToken');
     
         // Prepare the request
-        const response = await fetch('http://localhost:8080/api/user', {
+        const response = await fetch('http://localhost:8080/user', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,6 +79,26 @@ export default function APIProvider({children}) {
         return response.json();
     
     }
+    const updateResume = async(data) =>{
+        const token = localStorage.getItem('authToken');
+    
+        // Prepare the request
+        const response = await fetch('http://localhost:8080/user/resume', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Add the token to the headers
+            },
+            body: JSON.stringify(data),
+        });
+    
+        // Handle the response
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        return response.json();
+    }
 
     React.useEffect(() => {
         getProfilePic().then((data) => {
@@ -94,7 +114,7 @@ export default function APIProvider({children}) {
       }, []);
   
   return (
-    <APIContext.Provider value={{isLoading,user,getUserInfo,setIsLoading,setPhoto,setUser,updateProfilePic,photo}}>
+    <APIContext.Provider value={{isLoading,user,getUserInfo,setIsLoading,setPhoto,setUser,updateProfilePic,updateResume,photo}}>
         {children}
     </APIContext.Provider>
   )
