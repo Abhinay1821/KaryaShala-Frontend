@@ -1,8 +1,12 @@
 import React from 'react';
 import ProfilePicture from '../component/ProfilePicture';
 import ResumeSection from '../component/ResumeSection';
+import ResumeHeadlineUpdate from '../component/UpdateUserInfo/ResumeHeadlineUpdate';
+import KeySkillsUpdate from '../component/UpdateUserInfo/KeySkillsUpdate'
+import { useActionData } from 'react-router-dom';
+import { useAPI } from '../component/APIProvider';
 
-const keySkills = ['CPP', 'REACT', 'JAVASCRIPT', 'HTML', 'CSS', 'DJANGO', 'PYTHON', 'DOCKER', 'KUBERNATIS']
+// const keySkills = ['CPP', 'REACT', 'JAVASCRIPT', 'HTML', 'CSS', 'DJANGO', 'PYTHON', 'DOCKER', 'KUBERNATIS']
 const employments = [
     {
         title: 'Software Engineer',
@@ -40,9 +44,13 @@ const education = [
 ];
 
 export default function UserProfile() {
+    const {user} = useAPI()
+    const [headlineFormOpen, setHeadlineFormOpen] = React.useState(false)
+    const [keySkillsFormOpen, setKeySkillsFormOpen] = React.useState(false)
+    const [keySkills,setKeySkills] = React.useState(user?.skillsInfo[0]?.skill.split(','))
     return (
         <>
-            <div className="container mx-auto p-6">
+            <div className={`container mx-auto p-6 `}>
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -81,20 +89,25 @@ export default function UserProfile() {
 
                     {/* Main Profile Section */}
                     <div className="col-span-2">
-                        {/* Resume Section */}
-                        <ResumeSection/>
+                        <ResumeSection />
 
                         {/* Resume Headline */}
                         <div className="bg-gray-800 p-6 mt-6 rounded-lg shadow-lg">
-                            <h2 className="font-semibold text-white">Resume headline</h2>
+                            <div className='flex flex-row'>
+                                <h2 className="font-semibold text-white mr-2">Resume headline</h2>
+                                <button className="text-blue-500 cursor-pointer" onClick={() => setHeadlineFormOpen(true)}>✏️</button>
+                            </div>
                             <p className="mt-4 text-gray-300">I am Abhinay Agrawal, Innovative Software Engineer, Seeking New Challenges and Growth Opportunities</p>
                         </div>
 
                         {/* {Skills} */}
                         <div className="bg-gray-800 p-6 mt-6 rounded-lg shadow-lg">
-                            <h2 className="font-semibold text-white">Key Skills</h2>
+                            <div className='flex flex-row'>
+                                <h2 className="font-semibold text-white mr-2">Key Skills</h2>
+                                <button className="text-blue-500 cursor-pointer" onClick={() => setKeySkillsFormOpen(true)}>✏️</button>
+                            </div>
                             <div className='flex flex-wrap rounded-lg shadow-md'>
-                                {keySkills.map((value, index) => (
+                                {keySkills?.map((value, index) => (
                                     <div
                                         key={index}
                                         className='mt-4 mr-3 px-4 py-2 bg-gray text-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-900 cursor-pointer'
@@ -128,7 +141,7 @@ export default function UserProfile() {
                                         <p className="text-white mb-1">
                                             <span className="font-semibold">Top 5 key skills:</span>
                                             {job.skills.map((skill, i) => (
-                                                <span key={i} className="text-gray-300 font-light mx-1">{i<job?.skills.length-1 ? `${skill},` : skill}</span>
+                                                <span key={i} className="text-gray-300 font-light mx-1">{i < job?.skills.length - 1 ? `${skill},` : skill}</span>
                                             ))}
                                         </p>
                                     )}
@@ -182,6 +195,13 @@ export default function UserProfile() {
                     </div>
                 </div>
             </div>
+
+            {
+                headlineFormOpen && <ResumeHeadlineUpdate setOpen={setHeadlineFormOpen} />
+            }
+            {
+                keySkillsFormOpen && <KeySkillsUpdate setOpen={setKeySkillsFormOpen} keySkills={keySkills} setKeySkills={setKeySkills}/>
+            }
         </>
     );
 }

@@ -39,7 +39,7 @@ const AboutPage = () => {
           </div>
           <div className="member flex flex-col items-center text-center">
             <img
-              src="https://media.licdn.com/dms/image/v2/D5635AQFLdtXGhtMfbA/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1724066905550?e=1725084000&v=beta&t=gO36oJPDMM7NhedWrOC6A71ULcnIittICGs_vkjDsiw"
+              src="https://media.licdn.com/dms/image/v2/D5635AQGTOk27aagsGQ/profile-framedphoto-shrink_200_200/profile-framedphoto-shrink_200_200/0/1724650732948?e=1725264000&v=beta&t=7awEfzq2iGwszG_PsfBRhlRdJEyEuC5t6JCg9cW_lbg"
               alt="Abhinay Agrawal"
               className="w-32 h-32 rounded-full mb-4 object-cover"
             />
